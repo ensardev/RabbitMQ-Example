@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.ConsolePublisher", "RabbitMQ.ConsolePublisher\RabbitMQ.ConsolePublisher.csproj", "{AD103573-E1D3-4722-947F-0FF66CDEA05C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.ConsoleSubscriber", "RabbitMQ.ConsoleSubscriber\RabbitMQ.ConsoleSubscriber.csproj", "{20EBE2A2-2C60-4611-A2E9-F75B56E0B23D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AD103573-E1D3-4722-947F-0FF66CDEA05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD103573-E1D3-4722-947F-0FF66CDEA05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD103573-E1D3-4722-947F-0FF66CDEA05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20EBE2A2-2C60-4611-A2E9-F75B56E0B23D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20EBE2A2-2C60-4611-A2E9-F75B56E0B23D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20EBE2A2-2C60-4611-A2E9-F75B56E0B23D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20EBE2A2-2C60-4611-A2E9-F75B56E0B23D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
