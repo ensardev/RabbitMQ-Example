@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System;
+using System.Text;
 
 namespace RabbitMQ.ConsoleSubscriber
 {
@@ -6,7 +9,34 @@ namespace RabbitMQ.ConsoleSubscriber
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //RabbitMQ connection factory create
+            var factory = new ConnectionFactory();
+            factory.Uri = new Uri("amqps://tvfwnuej:WeJUaYAELRx62MP8yMJcEiNNqWEAYETS@sparrow.rmq.cloudamqp.com/tvfwnuej");
+
+            //Create connection
+            using var connection = factory.CreateConnection();
+
+            //Create channel
+            var channel = connection.CreateModel();
+
+            //Create queue
+            channel.QueueDeclare("hello-queue", true, false, false, null);
+
+            //Create consumer
+            var consumer = new EventingBasicConsumer(channel);
+
+            channel.BasicConsume("hello-queue", true, consumer);
+
+            Console.WriteLine("Waiting for messages...");
+
+            consumer.Received += (object sender, BasicDeliverEventArgs e) =>
+            {
+                var message = Encoding.UTF8.GetString(e.Body.ToArray());
+                Console.WriteLine(" [x] Gelen mesaj : {0}", message);
+            };
+
+
+            Console.ReadLine();
         }
     }
 }
