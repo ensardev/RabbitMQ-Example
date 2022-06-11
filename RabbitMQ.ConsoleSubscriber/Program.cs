@@ -21,18 +21,20 @@ namespace RabbitMQ.ConsoleSubscriber
 
             //Create queue
             channel.QueueDeclare("hello-queue", true, false, false, null);
-
+            channel.BasicQos(0, 1, false);
             //Create consumer
             var consumer = new EventingBasicConsumer(channel);
 
-            channel.BasicConsume("hello-queue", true, consumer);
+            channel.BasicConsume("hello-queue", false, consumer);
 
             Console.WriteLine("Waiting for messages...");
 
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
             {
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
-                Console.WriteLine(" [x] Gelen mesaj : {0}", message);
+                Console.WriteLine(" [x] Message : {0}", message);
+
+                channel.BasicAck(e.DeliveryTag, false);
             };
 
 
