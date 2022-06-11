@@ -20,15 +20,18 @@ namespace RabbitMQ.ConsolePublisher
             var channel = connection.CreateModel();
 
             //Create queue
-            channel.QueueDeclare("hello-queue", true, false, false, null);
+            //Comment for Exchange example
+            //channel.QueueDeclare("hello-queue", true, false, false, null); 
+
+            channel.ExchangeDeclare("logs-fanout",durable:true,type:ExchangeType.Fanout);
 
             Enumerable.Range(1, 50).ToList().ForEach(x =>
             {
                 //Publish message
-                string message = $"Hello World! {x}";
+                string message = $"Log {x}";
                 var messageBody = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish("", "hello-queue", null, messageBody);
+                channel.BasicPublish("logs-fanout", "", null, messageBody);
 
                 Console.WriteLine("Message send.");
             });

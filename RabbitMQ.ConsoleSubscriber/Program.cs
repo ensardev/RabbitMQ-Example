@@ -18,21 +18,26 @@ namespace RabbitMQ.ConsoleSubscriber
 
             //Create channel
             var channel = connection.CreateModel();
+            var randomQueueName = channel.QueueDeclare().QueueName;
+
+            channel.QueueBind(randomQueueName, "logs-fanout", "", null);
 
             //Create queue
-            channel.QueueDeclare("hello-queue", true, false, false, null);
+            //channel.QueueDeclare("hello-queue", true, false, false, null);
+
             channel.BasicQos(0, 1, false);
+
             //Create consumer
             var consumer = new EventingBasicConsumer(channel);
 
-            channel.BasicConsume("hello-queue", false, consumer);
+            channel.BasicConsume(randomQueueName, false, consumer);
 
-            Console.WriteLine("Waiting for messages...");
+            Console.WriteLine("Waiting for logs...");
 
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
             {
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
-                Console.WriteLine(" [x] Message : {0}", message);
+                Console.WriteLine(" [x] Log : {0}", message);
 
                 channel.BasicAck(e.DeliveryTag, false);
             };
