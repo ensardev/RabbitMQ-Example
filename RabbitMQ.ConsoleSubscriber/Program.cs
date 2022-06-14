@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.IO;
 using System.Text;
 
 namespace RabbitMQ.ConsoleSubscriber
@@ -18,20 +19,17 @@ namespace RabbitMQ.ConsoleSubscriber
 
             //Create channel
             var channel = connection.CreateModel();
-            var randomQueueName = channel.QueueDeclare().QueueName;
 
-            channel.QueueBind(randomQueueName, "logs-fanout", "", null);
 
             //Create queue
             //channel.QueueDeclare("hello-queue", true, false, false, null);
 
+            var queueName = "direct-queue-Critical";
+            
             channel.BasicQos(0, 1, false);
 
             //Create consumer
             var consumer = new EventingBasicConsumer(channel);
-
-            channel.BasicConsume(randomQueueName, false, consumer);
-
             Console.WriteLine("Waiting for logs...");
 
             consumer.Received += (object sender, BasicDeliverEventArgs e) =>
@@ -39,9 +37,12 @@ namespace RabbitMQ.ConsoleSubscriber
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
                 Console.WriteLine(" [x] Log : {0}", message);
 
+                //File.AppendAllText("logs-critical.txt", message + Environment.NewLine);
+
                 channel.BasicAck(e.DeliveryTag, false);
             };
-
+            
+            channel.BasicConsume(queueName, false, consumer);
 
             Console.ReadLine();
         }
