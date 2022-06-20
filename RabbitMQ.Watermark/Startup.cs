@@ -33,6 +33,7 @@ namespace RabbitMQ.Watermark
             });
 
             services.AddSingleton<RabbitMQClientService>();
+            services.AddSingleton<RabbitMQPublisher>();
 
             services.AddDbContext<AppDbContext>(options =>
             {
