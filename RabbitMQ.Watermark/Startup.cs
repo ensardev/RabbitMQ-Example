@@ -30,7 +30,8 @@ namespace RabbitMQ.Watermark
         {
             services.AddSingleton(sp => new ConnectionFactory()
             {
-                Uri = new Uri(Configuration.GetConnectionString("RabbitMQCloud"))
+                Uri = new Uri(Configuration.GetConnectionString("RabbitMQCloud")),
+                DispatchConsumersAsync = true
             });
 
             services.AddSingleton<RabbitMQClientService>();

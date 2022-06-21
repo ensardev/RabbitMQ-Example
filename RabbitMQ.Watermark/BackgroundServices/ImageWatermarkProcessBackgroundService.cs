@@ -56,25 +56,25 @@ namespace RabbitMQ.Watermark.BackgroundServices
                 using var image = Image.FromFile(path);
                 using var graphic = Graphics.FromImage(image);
 
-                var font = new Font(FontFamily.GenericMonospace, 32, FontStyle.Bold, GraphicsUnit.Pixel);
+                var font = new Font(FontFamily.GenericMonospace, 48, FontStyle.Bold, GraphicsUnit.Pixel);
                 var textSize = graphic.MeasureString("RUGASHEN", font);
-                var color = Color.FromArgb(1, 253, 156, 110);
+                var color = Color.FromArgb(128, 253, 156, 110);
                 var brush = new SolidBrush(color);
 
                 var position = new Point(image.Width - ((int)textSize.Width + 30), image.Height - ((int)textSize.Height + 30));
 
                 graphic.DrawString("RUGASHEN", font, brush, position);
 
-                image.Save("wwwroot/images/watermarks" + imageCreatedEvent.ImageName);
+                image.Save("wwwroot/images/watermarks/" + imageCreatedEvent.ImageName);
 
                 image.Dispose();
                 graphic.Dispose();
 
                 _channel.BasicAck(@event.DeliveryTag, false);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw;
+                _logger.LogError(ex.Message);
             }
 
             return Task.CompletedTask;
